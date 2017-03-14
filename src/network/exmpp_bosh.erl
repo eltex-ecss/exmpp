@@ -90,9 +90,7 @@ wping(_Pid) ->
 %% don't do anything on init. We establish the connection when the stream start 
 %% is sent                                                                      
 init([ClientPid, StreamRef, URL, Domain, Options]) ->                           
-    {A,B,C} = now(),                                                            
-    random:seed(A,B,C),                                                         
-    Rid = 1000 + random:uniform(100000),                                        
+    Rid = 1000 + rand:uniform(100000),
     ParsedUrl = parse_url(URL),                                                 
     IP = proplists:get_value(local_ip, Options, undefined),                     
     Port= proplists:get_value(local_port, Options, undefined),                  

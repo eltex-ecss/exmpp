@@ -814,9 +814,9 @@ retract(Id, Service, Node, ItemID) ->
 %%     Pubsub_ID = string()
 %% @doc Generate a random pubsub iq ID.
 %%
-%% This function uses {@link random:uniform/1}. It's up to the caller to
+%% This function uses {@link rand:uniform/1}. It's up to the caller to
 %% seed the generator.
 
 pubsub_id() ->
-    "pubsub-" ++ integer_to_list(random:uniform(65536 * 65536)).
+    "pubsub-" ++ integer_to_list(rand:uniform(65536 * 65536)).
 

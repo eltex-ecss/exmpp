@@ -153,8 +153,6 @@ set_controlling_process(Component,Client) when is_pid(Component), is_pid(Client)
 init([Pid]) ->
     inets:start(),
     exmpp_stringprep:start(),
-    {A1,A2,A3} = now(),
-    random:seed(A1, A2, A3),
     {ok, setup, #state{client_pid=Pid}}.
 
 handle_event(tcp_closed, _StateName, State) ->
@@ -513,7 +511,7 @@ do_process_iq(ClientPid, Attrs, Packet) ->
 %% Add a packet ID is needed:
 %% Check that the attribute list has defined an ID.
 %% If no ID has been defined, add a packet id to the list of attributes
-%% This function uses {@link random:uniform/1}. It's up to the caller to
+%% This function uses {@link rand:uniform/1}. It's up to the caller to
 %% seed the generator.
 check_id(Attrs) ->
     case exmpp_xml:get_attribute_from_list_as_binary(Attrs, <<"id">>, <<>>) of
