@@ -144,14 +144,14 @@ start_link() ->
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end.
-start({1,0}) ->
-    case gen_fsm:start(?MODULE, [self(), {1,0}], []) of
+start(Version) ->
+    case gen_fsm:start(?MODULE, [self(), Version], []) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end.
 %% Start the session (used to get a reference):
-start_link({1,0}) ->
-    case gen_fsm:start_link(?MODULE, [self(), {1,0}], []) of
+start_link(Version) ->
+    case gen_fsm:start_link(?MODULE, [self(), Version], []) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end;
