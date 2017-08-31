@@ -58,7 +58,7 @@
 -behaviour(gen_fsm).
 
 %% XMPP Session API:
--export([start/0, start_link/0, start/1, start_link/1,start_debug/0, start_debug/1, stop/1]).
+-export([start/0, start_link/0, start/1, start_link/1,start_link/2,start_debug/0, start_debug/1, stop/1]).
 -export([auth_basic/3, auth_basic_digest/3,
          auth_info/3, auth_method/2, auth/4,
 	 connect_SSL/2, connect_SSL/3, connect_SSL/4,
@@ -144,19 +144,24 @@ start_link() ->
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end.
-start(Version) ->
+start(Version) when Version =:= {0,0} orelse Version =:= {1,0} ->
     case gen_fsm:start(?MODULE, [self(), Version], []) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end.
 %% Start the session (used to get a reference):
-start_link(Version) ->
+start_link(Version) when Version =:= {0,0} orelse Version =:= {1,0} ->
     case gen_fsm:start_link(?MODULE, [self(), Version], []) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end;
 start_link(Session) ->
     case gen_fsm:start_link({local, Session}, ?MODULE, [self()], []) of
+        {ok, PID} -> PID;
+        Error -> Error
+    end.
+start_link(Session, Version) when Version =:= {0,0} orelse Version =:= {1,0} ->
+    case gen_fsm:start_link({local, Session}, ?MODULE, [self(), Version], []) of
         {ok, PID} -> PID;
         Error -> Error
     end.
@@ -171,7 +176,7 @@ start_debug() ->
 
 %% Start the session in debug mode
 %% (trace events)
-start_debug(Version) ->
+start_debug(Version) when Version =:= {0,0} orelse Version =:= {1,0} ->
     case gen_fsm:start(?MODULE, [self(), Version], [{debug,[trace]}]) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
