@@ -58,7 +58,7 @@
 -behaviour(gen_fsm).
 
 %% XMPP Session API:
--export([start/0, start_link/0, start/1, start_link/1,start_debug/0, stop/1]).
+-export([start/0, start_link/0, start/1, start_link/1,start_debug/0, start_debug/1, stop/1]).
 -export([auth_basic/3, auth_basic_digest/3,
          auth_info/3, auth_method/2, auth/4,
 	 connect_SSL/2, connect_SSL/3, connect_SSL/4,
@@ -165,6 +165,14 @@ start_link(Session) ->
 %% (trace events)
 start_debug() ->
     case gen_fsm:start(?MODULE, [self()], [{debug,[trace]}]) of
+	{ok, PID} -> PID;
+	{error, Reason} -> erlang:error({error, Reason})
+    end.
+
+%% Start the session in debug mode
+%% (trace events)
+start_debug(Version) ->
+    case gen_fsm:start(?MODULE, [self(), Version], [{debug,[trace]}]) of
 	{ok, PID} -> PID;
 	{error, Reason} -> erlang:error({error, Reason})
     end.
